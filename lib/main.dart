@@ -123,7 +123,13 @@ class _MyHomePageState extends State<MyHomePage> {
                     final text = DateFormat.E().format(day);
 
                     return Center(
-                      child: Text(text),
+                      child: Text(
+                        text,
+                        style: const TextStyle(
+                          fontSize: 14,
+                          color: Colors.red,
+                        ),
+                      ),
                     );
                   }
                 },
