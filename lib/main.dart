@@ -39,10 +39,7 @@ final _newEventSource = <DateTime, List<Event>>{
   DateTime.utc(2022, 11, 01): [
     Event(title: 'Event on Nov1'),
   ],
-  DateTime.utc(2022, 11, 02): [
-    Event(title: 'Event on Nov 2'),
-    Event(title: 'Another Event on Nov 2')
-  ],
+  DateTime.utc(2022, 11, 02): [Event(title: 'Event on Nov 2'), Event(title: 'Another Event on Nov 2')],
   DateTime.utc(2022, 11, 16): [
     Event(title: 'Event on Nov 16'),
     Event(title: 'Another one'),
