@@ -65,7 +65,7 @@ class _MyHomePageState extends State<MyHomePage> {
   DateTime _selectedDay = DateTime.now();
   // Day calendar page is focused on
   DateTime _focusedDay = DateTime.now();
-  CalendarFormat _calendarFormat = CalendarFormat.month;
+  CalendarFormat _calendarFormat = CalendarFormat.week;
 
   List<Event> _getEventsForDay(DateTime day) {
     return kEvents[day] ?? [];
@@ -129,6 +129,28 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     );
                   }
+
+                  return null;
+                },
+              ),
+            ),
+            const SizedBox(height: 20),
+            Expanded(
+              child: ListView.builder(
+                itemCount: _selectedEvents.length,
+                itemBuilder: (context, index) {
+                  final event = _selectedEvents[index];
+                  return Container(
+                    height: 100,
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        width: 1,
+                        color: Colors.red,
+                      ),
+                    ),
+                    width: double.infinity,
+                    child: Text(event.title),
+                  );
                 },
               ),
             )
