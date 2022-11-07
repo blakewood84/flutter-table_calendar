@@ -5,6 +5,8 @@ import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+import 'dart:developer' as devtools;
+
 void main() {
   runApp(const MyApp());
 }
@@ -64,6 +66,10 @@ class _MyHomePageState extends State<MyHomePage> {
   // Day calendar page is focused on
   DateTime _focusedDay = DateTime.now();
   CalendarFormat _calendarFormat = CalendarFormat.week;
+  RangeSelectionMode _rangeSelectionMode = RangeSelectionMode.toggledOff;
+
+  DateTime? _rangeStart;
+  DateTime? _rangeEnd;
 
   List<Event> _getEventsForDay(DateTime day) {
     return kEvents[day] ?? [];
@@ -95,13 +101,18 @@ class _MyHomePageState extends State<MyHomePage> {
                   _focusedDay = focusedDay;
                   _selectedDay = selectedDay;
                   _selectedEvents = _getEventsForDay(selectedDay);
+                  _rangeSelectionMode = RangeSelectionMode.toggledOff;
+                  _rangeStart = null;
+                  _rangeEnd = null;
                 });
               },
               calendarFormat: _calendarFormat,
               onFormatChanged: (format) {
-                setState(() {
-                  _calendarFormat = format;
-                });
+                if (_calendarFormat != format) {
+                  setState(() {
+                    _calendarFormat = format;
+                  });
+                }
               },
               // Changes the focus day of the calendar
               onPageChanged: (focusedDay) {
@@ -131,6 +142,15 @@ class _MyHomePageState extends State<MyHomePage> {
                   return null;
                 },
               ),
+              rangeSelectionMode: _rangeSelectionMode,
+              rangeStartDay: _rangeStart,
+              rangeEndDay: _rangeEnd,
+              onRangeSelected: (start, end, focusedDay) {
+                devtools.log('On Range Selected!');
+                devtools.log('Start: ${start.toString()}');
+                devtools.log('End: ${end.toString()}');
+                devtools.log('Focused Day: ${focusedDay.toString()}');
+              },
             ),
             const SizedBox(height: 20),
             Expanded(
