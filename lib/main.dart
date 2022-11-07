@@ -181,7 +181,8 @@ class _MyHomePageState extends State<MyHomePage> {
               child: ListView.builder(
                 itemCount: _selectedDateRangeEvents != null ? _selectedDateRangeEvents!.length : _selectedEvents.length,
                 itemBuilder: (context, index) {
-                  final event = _selectedDateRangeEvents![index];
+                  final event =
+                      _selectedDateRangeEvents != null ? _selectedDateRangeEvents![index] : _selectedEvents[index];
                   return Container(
                     height: 100,
                     decoration: BoxDecoration(
