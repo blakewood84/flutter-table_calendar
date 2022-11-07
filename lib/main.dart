@@ -61,6 +61,8 @@ class _MyHomePageState extends State<MyHomePage> {
     hashCode: getHashCode,
   )..addAll(_newEventSource);
 
+  List<Event>? _selectedDateRangeEvents;
+
   // Tapped Day
   DateTime? _selectedDay = DateTime.now();
   // Day calendar page is focused on
@@ -73,6 +75,20 @@ class _MyHomePageState extends State<MyHomePage> {
 
   List<Event> _getEventsForDay(DateTime day) {
     return kEvents[day] ?? [];
+  }
+
+  void _getEventsForRange(DateTime start, DateTime end) {
+    final eventsList = <Event>[];
+    for (final entry in kEvents.entries) {
+      if (!entry.key.isBefore(start) && !entry.key.isAfter(end)) {
+        for (final item in entry.value) {
+          eventsList.add(item);
+        }
+      }
+    }
+    setState(() {
+      _selectedDateRangeEvents = eventsList;
+    });
   }
 
   List<Event> _selectedEvents = [];
@@ -104,6 +120,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   _rangeSelectionMode = RangeSelectionMode.toggledOff;
                   _rangeStart = null;
                   _rangeEnd = null;
+                  _selectedDateRangeEvents = null;
                 });
               },
               calendarFormat: _calendarFormat,
@@ -153,18 +170,18 @@ class _MyHomePageState extends State<MyHomePage> {
                   _rangeEnd = end;
                   _rangeSelectionMode = RangeSelectionMode.toggledOn;
                 });
-                devtools.log('On Range Selected!');
-                devtools.log('Start: ${start.toString()}');
-                devtools.log('End: ${end.toString()}');
-                devtools.log('Focused Day: ${focusedDay.toString()}');
+                // If date range is present, find all in that date range
+                if (_rangeStart != null && _rangeEnd != null) {
+                  _getEventsForRange(_rangeStart!, _rangeEnd!);
+                }
               },
             ),
             const SizedBox(height: 20),
             Expanded(
               child: ListView.builder(
-                itemCount: _selectedEvents.length,
+                itemCount: _selectedDateRangeEvents != null ? _selectedDateRangeEvents!.length : _selectedEvents.length,
                 itemBuilder: (context, index) {
-                  final event = _selectedEvents[index];
+                  final event = _selectedDateRangeEvents![index];
                   return Container(
                     height: 100,
                     decoration: BoxDecoration(
