@@ -62,10 +62,10 @@ class _MyHomePageState extends State<MyHomePage> {
   )..addAll(_newEventSource);
 
   // Tapped Day
-  DateTime _selectedDay = DateTime.now();
+  DateTime? _selectedDay = DateTime.now();
   // Day calendar page is focused on
   DateTime _focusedDay = DateTime.now();
-  CalendarFormat _calendarFormat = CalendarFormat.week;
+  CalendarFormat _calendarFormat = CalendarFormat.month;
   RangeSelectionMode _rangeSelectionMode = RangeSelectionMode.toggledOff;
 
   DateTime? _rangeStart;
@@ -146,6 +146,13 @@ class _MyHomePageState extends State<MyHomePage> {
               rangeStartDay: _rangeStart,
               rangeEndDay: _rangeEnd,
               onRangeSelected: (start, end, focusedDay) {
+                setState(() {
+                  _selectedDay = null;
+                  _focusedDay = focusedDay;
+                  _rangeStart = start;
+                  _rangeEnd = end;
+                  _rangeSelectionMode = RangeSelectionMode.toggledOn;
+                });
                 devtools.log('On Range Selected!');
                 devtools.log('Start: ${start.toString()}');
                 devtools.log('End: ${end.toString()}');
